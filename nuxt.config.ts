@@ -35,5 +35,10 @@ export default defineNuxtConfig({
       pathPrefix: false,
       ignore: ['**/*.ts'],
     },
+    {
+      path: '~/components/admin',
+      prefix: 'Admin',
+      ignore: ['**/*.ts'],
+    },
   ],
 })
