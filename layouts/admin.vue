@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { adminNavigation } from '~/config/admin.nav'
 import { Menu, X, Search, Bell, LogOut, ChevronDown } from 'lucide-vue-next'
+import { Toaster } from 'vue-sonner'
 
 // Note: Middleware is defined in each admin page, not in layout
 
@@ -198,5 +199,13 @@ const handleLogout = async () => {
         <slot />
       </main>
     </div>
+    
+    <!-- Toast notifications for admin panel -->
+    <Toaster 
+      position="bottom-left" 
+      theme="dark"
+      :rich-colors="true"
+      :close-button="true"
+    />
   </div>
 </template>
