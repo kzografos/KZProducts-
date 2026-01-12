@@ -1,44 +1,89 @@
 <script setup lang="ts">
+import { Sparkles, Twitter, Facebook, Instagram, Mail } from 'lucide-vue-next'
 </script>
 
 <template>
-  <footer class="border-t bg-background">
-    <div class="container py-8 md:py-12">
-      <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
+  <footer class="relative border-t border-white/10 bg-slate-950/80 backdrop-blur-xl">
+    <!-- Gradient line at top -->
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/50 to-transparent" />
+    
+    <div class="container py-12 md:py-16">
+      <div class="grid grid-cols-2 gap-8 md:grid-cols-5">
+        <!-- Brand Column -->
+        <div class="col-span-2 md:col-span-1">
+          <NuxtLink to="/" class="flex items-center gap-2 mb-4">
+            <div class="p-1.5 rounded-lg bg-violet-500/20">
+              <Sparkles class="h-5 w-5 text-violet-400" />
+            </div>
+            <span class="font-bold text-white">KZProducts</span>
+          </NuxtLink>
+          <p class="text-sm text-slate-400 max-w-xs">
+            Premium PC components for gaming and workstation builds.
+          </p>
+        </div>
+
+        <!-- About Links -->
         <div>
-          <h3 class="text-lg font-semibold">About</h3>
-          <ul class="mt-4 space-y-2 text-sm text-muted-foreground">
-            <li><NuxtLink to="/about" class="hover:underline">Our Story</NuxtLink></li>
-            <li><NuxtLink to="/contact" class="hover:underline">Contact Us</NuxtLink></li>
-            <li><NuxtLink to="/careers" class="hover:underline">Careers</NuxtLink></li>
+          <h3 class="text-sm font-semibold text-white mb-4">About</h3>
+          <ul class="space-y-3 text-sm">
+            <li><NuxtLink to="/about" class="text-slate-400 hover:text-violet-400 transition-colors">Our Story</NuxtLink></li>
+            <li><NuxtLink to="/contact" class="text-slate-400 hover:text-violet-400 transition-colors">Contact Us</NuxtLink></li>
+            <li><NuxtLink to="/careers" class="text-slate-400 hover:text-violet-400 transition-colors">Careers</NuxtLink></li>
           </ul>
         </div>
+
+        <!-- Support Links -->
         <div>
-          <h3 class="text-lg font-semibold">Support</h3>
-          <ul class="mt-4 space-y-2 text-sm text-muted-foreground">
-            <li><NuxtLink to="/faq" class="hover:underline">FAQ</NuxtLink></li>
-            <li><NuxtLink to="/shipping" class="hover:underline">Shipping</NuxtLink></li>
-            <li><NuxtLink to="/returns" class="hover:underline">Returns</NuxtLink></li>
+          <h3 class="text-sm font-semibold text-white mb-4">Support</h3>
+          <ul class="space-y-3 text-sm">
+            <li><NuxtLink to="/faq" class="text-slate-400 hover:text-violet-400 transition-colors">FAQ</NuxtLink></li>
+            <li><NuxtLink to="/shipping" class="text-slate-400 hover:text-violet-400 transition-colors">Shipping</NuxtLink></li>
+            <li><NuxtLink to="/returns" class="text-slate-400 hover:text-violet-400 transition-colors">Returns</NuxtLink></li>
           </ul>
         </div>
+
+        <!-- Legal Links -->
         <div>
-          <h3 class="text-lg font-semibold">Legal</h3>
-          <ul class="mt-4 space-y-2 text-sm text-muted-foreground">
-            <li><NuxtLink to="/policies/privacy" class="hover:underline">Privacy Policy</NuxtLink></li>
-            <li><NuxtLink to="/policies/terms" class="hover:underline">Terms of Service</NuxtLink></li>
+          <h3 class="text-sm font-semibold text-white mb-4">Legal</h3>
+          <ul class="space-y-3 text-sm">
+            <li><NuxtLink to="/policies/privacy" class="text-slate-400 hover:text-violet-400 transition-colors">Privacy Policy</NuxtLink></li>
+            <li><NuxtLink to="/policies/terms" class="text-slate-400 hover:text-violet-400 transition-colors">Terms of Service</NuxtLink></li>
           </ul>
         </div>
+
+        <!-- Social Links -->
         <div>
-          <h3 class="text-lg font-semibold">Connect</h3>
-          <ul class="mt-4 space-y-2 text-sm text-muted-foreground">
-            <li><a href="#" class="hover:underline">Twitter</a></li>
-            <li><a href="#" class="hover:underline">Facebook</a></li>
-            <li><a href="#" class="hover:underline">Instagram</a></li>
-          </ul>
+          <h3 class="text-sm font-semibold text-white mb-4">Connect</h3>
+          <div class="flex gap-3">
+            <a href="#" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
+              <Twitter class="h-4 w-4" />
+            </a>
+            <a href="#" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
+              <Facebook class="h-4 w-4" />
+            </a>
+            <a href="#" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
+              <Instagram class="h-4 w-4" />
+            </a>
+            <a href="mailto:support@kzproducts.com" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
+              <Mail class="h-4 w-4" />
+            </a>
+          </div>
         </div>
       </div>
-      <div class="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
-        © {{ new Date().getFullYear() }} KZProducts. All rights reserved.
+
+      <!-- Bottom Bar -->
+      <div class="mt-12 pt-8 border-t border-white/10">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="text-sm text-slate-500">
+            © {{ new Date().getFullYear() }} KZProducts. All rights reserved.
+          </p>
+          <div class="flex items-center gap-4 text-sm text-slate-500">
+            <span class="flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              All systems operational
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </footer>

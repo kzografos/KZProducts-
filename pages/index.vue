@@ -1,53 +1,64 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
 import CategoryShowcase from '@/components/home/CategoryShowcase.vue'
+import AnimatedBackground from '@/components/ui/AnimatedBackground.vue'
 
 // Fetch frontmatter from content
 const { data: page } = await useAsyncData('index', () => queryContent('/').findOne())
 </script>
 
 <template>
-  <div>
+  <div class="relative min-h-screen bg-slate-950">
+    <!-- Animated Background -->
+    <AnimatedBackground />
+    
     <!-- Hero Section -->
-    <section class="relative overflow-hidden bg-gradient-to-br from-background via-background to-primary/5">
-      <!-- Decorative background elements -->
-      <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute -top-1/2 -right-1/2 w-[800px] h-[800px] rounded-full bg-gradient-to-br from-primary/10 to-transparent blur-3xl" />
-        <div class="absolute -bottom-1/2 -left-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-primary/5 to-transparent blur-3xl" />
-      </div>
-      
+    <section class="relative overflow-hidden">
       <div class="container relative py-24 lg:py-32">
         <div class="text-center space-y-8 max-w-4xl mx-auto">
-          <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text">
+          <!-- Gradient Title -->
+          <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl bg-gradient-to-r from-white via-white to-violet-400 bg-clip-text text-transparent">
             {{ page?.hero?.title || 'Build Your Dream PC' }}
           </h1>
-          <p class="mx-auto max-w-[700px] text-lg sm:text-xl text-muted-foreground">
+          
+          <!-- Subtitle -->
+          <p class="mx-auto max-w-[700px] text-lg sm:text-xl text-slate-400">
             {{ page?.hero?.subtitle || 'The best CPUs, GPUs, and components for gaming and workstation builds.' }}
           </p>
+          
+          <!-- CTA Buttons -->
           <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <Button size="lg" class="text-base px-8 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-shadow" as-child>
-              <NuxtLink :to="page?.hero?.cta_primary_link || '/products'">
+            <!-- Primary Button with Glow -->
+            <NuxtLink 
+              :to="page?.hero?.cta_primary_link || '/products'"
+              class="group relative inline-flex items-center justify-center"
+            >
+              <span class="absolute inset-0 rounded-xl bg-violet-500/30 blur-xl transition-all duration-300 group-hover:bg-violet-500/50 group-hover:blur-2xl" />
+              <span class="relative inline-flex items-center justify-center rounded-xl bg-violet-600 px-8 py-3 text-base font-semibold text-white transition-all duration-300 hover:bg-violet-500 hover:scale-105">
                 {{ page?.hero?.cta_primary || 'Shop Now' }}
-              </NuxtLink>
-            </Button>
-            <Button variant="outline" size="lg" class="text-base px-8" as-child>
-              <NuxtLink :to="page?.hero?.cta_secondary_link || '/about'">
-                {{ page?.hero?.cta_secondary || 'Learn More' }}
-              </NuxtLink>
-            </Button>
+              </span>
+            </NuxtLink>
+            
+            <!-- Secondary Button -->
+            <NuxtLink 
+              :to="page?.hero?.cta_secondary_link || '/about'"
+              class="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/5 px-8 py-3 text-base font-medium text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white/30"
+            >
+              {{ page?.hero?.cta_secondary || 'Learn More' }}
+            </NuxtLink>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Category Showcase -->
-    <div class="container">
+    <div class="container relative">
       <CategoryShowcase />
     </div>
 
     <!-- Features Section from Content -->
-    <section class="container py-16">
-      <article class="prose prose-lg dark:prose-invert mx-auto max-w-4xl">
+    <section class="container relative py-16">
+      <article class="prose prose-lg prose-invert mx-auto max-w-4xl prose-headings:text-white prose-p:text-slate-400 prose-a:text-violet-400">
         <ContentDoc />
       </article>
     </section>

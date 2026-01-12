@@ -31,8 +31,8 @@ const filteredProducts = computed(() => {
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
       <div>
-        <h1 class="text-3xl font-bold tracking-tight">All Products</h1>
-        <p class="text-muted-foreground mt-1">
+        <h1 class="text-3xl font-bold tracking-tight text-white">All Products</h1>
+        <p class="text-slate-400 mt-1">
           Browse our complete collection of PC components
         </p>
       </div>

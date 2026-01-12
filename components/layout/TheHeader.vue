@@ -66,12 +66,12 @@ const getIcon = (slug: string) => categoryIcons[slug] || Cpu
     class="sticky top-0 z-50 w-full transition-all duration-300"
     :class="[
       isScrolled 
-        ? 'bg-background/70 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/5' 
-        : 'bg-background/50 backdrop-blur-md border-b border-transparent'
+        ? 'bg-slate-950/80 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-violet-500/5' 
+        : 'bg-slate-950/50 backdrop-blur-md border-b border-transparent'
     ]"
   >
     <!-- Glassmorphism gradient overlay -->
-    <div class="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 pointer-events-none" />
+    <div class="absolute inset-0 bg-gradient-to-r from-violet-500/5 via-transparent to-violet-500/5 pointer-events-none" />
     
     <div class="container relative flex h-16 items-center">
       <!-- Mobile Menu -->
