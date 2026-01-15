@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Sparkles, Twitter, Facebook, Instagram, Mail } from 'lucide-vue-next'
+import { Sparkles, Twitter, Facebook, Instagram, Linkedin, Mail } from 'lucide-vue-next'
 </script>
 
 <template>
@@ -28,7 +28,6 @@ import { Sparkles, Twitter, Facebook, Instagram, Mail } from 'lucide-vue-next'
           <ul class="space-y-3 text-sm">
             <li><NuxtLink to="/about" class="text-slate-400 hover:text-violet-400 transition-colors">Our Story</NuxtLink></li>
             <li><NuxtLink to="/contact" class="text-slate-400 hover:text-violet-400 transition-colors">Contact Us</NuxtLink></li>
-            <li><NuxtLink to="/careers" class="text-slate-400 hover:text-violet-400 transition-colors">Careers</NuxtLink></li>
           </ul>
         </div>
 
@@ -55,15 +54,18 @@ import { Sparkles, Twitter, Facebook, Instagram, Mail } from 'lucide-vue-next'
         <div>
           <h3 class="text-sm font-semibold text-white mb-4">Connect</h3>
           <div class="flex gap-3">
-            <a href="#" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
+            <NuxtLink to="/" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
               <Twitter class="h-4 w-4" />
-            </a>
-            <a href="#" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
+            </NuxtLink>
+            <NuxtLink to="/" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
               <Facebook class="h-4 w-4" />
-            </a>
-            <a href="#" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
+            </NuxtLink>
+            <NuxtLink to="/" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
               <Instagram class="h-4 w-4" />
-            </a>
+            </NuxtLink>
+            <NuxtLink to="/" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
+              <Linkedin class="h-4 w-4" />
+            </NuxtLink>
             <a href="mailto:support@kzproducts.com" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
               <Mail class="h-4 w-4" />
             </a>
