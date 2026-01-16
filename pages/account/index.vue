@@ -4,6 +4,10 @@ definePageMeta({
 })
 
 const user = useSupabaseUser()
+const route = useRoute()
+
+// Check if current route matches
+const isActive = (path: string) => route.path === path
 </script>
 
 <template>
@@ -16,15 +20,15 @@ const user = useSupabaseUser()
     </div>
 
     <div class="grid md:grid-cols-3 gap-8">
-       <!-- Sidebar Nav (could be component) -->
+       <!-- Sidebar Nav -->
        <div class="space-y-2">
-          <Button variant="secondary" class="w-full justify-start" as-child>
+          <Button :variant="isActive('/account') ? 'secondary' : 'ghost'" class="w-full justify-start" as-child>
              <NuxtLink to="/account">Dashboard</NuxtLink>
           </Button>
-          <Button variant="ghost" class="w-full justify-start" as-child>
+          <Button :variant="isActive('/account/orders') ? 'secondary' : 'ghost'" class="w-full justify-start" as-child>
              <NuxtLink to="/account/orders">Orders</NuxtLink>
           </Button>
-          <Button variant="ghost" class="w-full justify-start" as-child>
+          <Button :variant="isActive('/account/settings') ? 'secondary' : 'ghost'" class="w-full justify-start" as-child>
              <NuxtLink to="/account/settings">Settings</NuxtLink>
           </Button>
        </div>

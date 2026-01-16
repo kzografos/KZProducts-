@@ -15,6 +15,53 @@ const user = useSupabaseUser()
 const client = useSupabaseClient()
 const router = useRouter()
 
+// Avatar options mapping
+const avatarMap: Record<string, string> = {
+  'default': '👤',
+  'gamer-1': '🎮',
+  'gamer-2': '🕹️',
+  'tech-1': '💻',
+  'tech-2': '🖥️',
+  'robot-1': '🤖',
+  'robot-2': '⚡',
+  'abstract-1': '🔵',
+  'abstract-2': '🟣',
+}
+
+// Fetch user's avatar from profile
+const avatarId = ref('default')
+
+const fetchUserAvatar = async () => {
+  if (!user.value?.id) return
+  try {
+    const { data } = await client
+      .from('profiles')
+      .select('avatar_id')
+      .eq('id', user.value.id)
+      .single()
+    if (data && (data as any).avatar_id) {
+      avatarId.value = (data as any).avatar_id
+    }
+  } catch (e) {
+    // Fallback to default
+  }
+}
+
+// Fetch avatar on mount
+onMounted(() => {
+  fetchUserAvatar()
+})
+
+// Watch for user changes
+watch(user, () => {
+  if (user.value?.id) {
+    fetchUserAvatar()
+  }
+}, { immediate: true })
+
+// Get avatar emoji
+const avatarEmoji = computed(() => avatarMap[avatarId.value] || '👤')
+
 // Get user's initials from full_name or email
 const userInitials = computed(() => {
   if (!user.value) return ''
@@ -48,15 +95,15 @@ const handleLogout = async () => {
 }
 </script>
 
+
 <template>
   <!-- Logged In: Avatar with Dropdown -->
   <DropdownMenu v-if="user">
     <DropdownMenuTrigger as-child>
       <Button variant="ghost" class="relative h-9 w-9 rounded-full hover:bg-white/10">
         <Avatar class="h-9 w-9 border-2 border-primary/20 hover:border-primary/50 transition-colors">
-          <AvatarImage :src="user.user_metadata?.avatar_url" :alt="displayName" />
-          <AvatarFallback class="bg-gradient-to-br from-primary/80 to-primary text-primary-foreground font-medium text-sm">
-            {{ userInitials }}
+          <AvatarFallback class="bg-gradient-to-br from-primary/80 to-primary text-primary-foreground text-lg">
+            {{ avatarEmoji }}
           </AvatarFallback>
         </Avatar>
       </Button>

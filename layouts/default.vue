@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Toaster } from '@/components/ui/sonner'
+// Toaster is provided globally in app.vue
 </script>
 
 <template>
@@ -9,6 +9,5 @@ import { Toaster } from '@/components/ui/sonner'
       <slot />
     </main>
     <TheFooter />
-    <Toaster />
   </div>
 </template>
