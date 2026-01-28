@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LogOut, User, Package, Settings } from "lucide-vue-next";
+import { LogOut, User, Package, Settings, Heart } from "lucide-vue-next";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -148,6 +148,13 @@ const handleLogout = async () => {
           >
             <Package class="mr-2 h-4 w-4" />
             My Orders
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            @click="router.push('/account/wishlist')"
+            class="cursor-pointer focus:bg-white/10"
+          >
+            <Heart class="mr-2 h-4 w-4" />
+            Favorites
           </DropdownMenuItem>
           <DropdownMenuItem
             @click="router.push('/account/settings')"

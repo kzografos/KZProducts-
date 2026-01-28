@@ -112,6 +112,13 @@ const discountPercentage = computed(() => {
         Only {{ product.stock_quantity }} left
       </Badge>
       
+      <!-- Wishlist Button (top-right, moves if stock badge) -->
+      <WishlistButton 
+        :product-id="product.id"
+        class="absolute z-10"
+        :class="product.stock_quantity > 0 && product.stock_quantity < 5 ? 'top-12 right-3' : 'top-3 right-3'"
+      />
+      
       <!-- Quick Add Overlay -->
       <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
         <Button 
