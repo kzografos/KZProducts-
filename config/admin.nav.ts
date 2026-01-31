@@ -7,6 +7,7 @@ import {
   BarChart3,
   Tags,
   Mail,
+  MessageSquare,
   type LucideIcon
 } from 'lucide-vue-next'
 
@@ -49,6 +50,11 @@ export const adminNavigation: AdminNavSection[] = [
         label: 'Orders',
         icon: ShoppingCart,
         href: '/admin/orders'
+      },
+      {
+        label: 'Reviews',
+        icon: MessageSquare,
+        href: '/admin/reviews'
       }
     ]
   },

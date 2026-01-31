@@ -16,6 +16,17 @@ const props = defineProps<{
   product: Product
 }>()
 
+// Review stats
+const { fetchReviewStats } = useReviews()
+const reviewStats = ref<{ average_rating: number; total_reviews: number } | null>(null)
+
+onMounted(async () => {
+  const stats = await fetchReviewStats(props.product.id)
+  if (stats && stats.total_reviews > 0) {
+    reviewStats.value = stats
+  }
+})
+
 const cartStore = useCartStore()
 
 // Image error handling
@@ -139,6 +150,14 @@ const discountPercentage = computed(() => {
         <div class="w-1.5 h-1.5 rounded-full bg-primary/60" />
         <span class="text-xs text-muted-foreground uppercase tracking-widest font-medium">
           {{ product.categories.name }}
+        </span>
+      </div>
+      
+      <!-- Rating Display -->
+      <div v-if="reviewStats" class="flex items-center gap-1.5">
+        <StarRating :rating="reviewStats.average_rating" size="sm" />
+        <span class="text-xs text-muted-foreground">
+          ({{ reviewStats.total_reviews }})
         </span>
       </div>
       <!-- Product Name -->
