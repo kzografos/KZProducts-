@@ -35,10 +35,22 @@ const handleLogin = async () => {
         router.push('/')
     } catch (e: any) {
         error.value = e.message
+        
+        // Track failed login attempt for security alerts
+        try {
+          await $fetch('/api/auth/track-failed-attempt', {
+            method: 'POST',
+            body: { email: email.value }
+          })
+        } catch (trackError) {
+          // Silent fail - don't expose tracking to user
+          console.error('Failed to track login attempt:', trackError)
+        }
     } finally {
         loading.value = false
     }
 }
+
 </script>
 
 <template>

@@ -8,6 +8,7 @@ import {
   Tags,
   Mail,
   MessageSquare,
+  Bell,
   type LucideIcon
 } from 'lucide-vue-next'
 
@@ -30,6 +31,11 @@ export const adminNavigation: AdminNavSection[] = [
         label: 'Dashboard',
         icon: LayoutDashboard,
         href: '/admin'
+      },
+      {
+        label: 'Notifications',
+        icon: Bell,
+        href: '/admin/notifications'
       }
     ]
   },

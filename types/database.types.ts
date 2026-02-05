@@ -1,6 +1,3 @@
-Need to install the following packages:
-supabase@2.72.9
-Ok to proceed? (y) 
 export type Json =
   | string
   | number
@@ -55,6 +52,56 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      admin_notifications: {
+        Row: {
+          admin_id: string
+          created_at: string
+          id: string
+          is_read: boolean
+          link: string | null
+          message: string
+          metadata: Json | null
+          priority: string
+          related_id: string | null
+          title: string
+          type: string
+        }
+        Insert: {
+          admin_id: string
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          link?: string | null
+          message: string
+          metadata?: Json | null
+          priority?: string
+          related_id?: string | null
+          title: string
+          type: string
+        }
+        Update: {
+          admin_id?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          link?: string | null
+          message?: string
+          metadata?: Json | null
+          priority?: string
+          related_id?: string | null
+          title?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_notifications_admin_id_fkey"
+            columns: ["admin_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       cart_items: {
         Row: {
@@ -121,6 +168,30 @@ export type Database = {
           name?: string
           slug?: string
           sort_order?: number | null
+        }
+        Relationships: []
+      }
+      login_attempts: {
+        Row: {
+          attempted_at: string
+          id: string
+          ip_address: unknown
+          success: boolean
+          user_email: string | null
+        }
+        Insert: {
+          attempted_at?: string
+          id?: string
+          ip_address: unknown
+          success?: boolean
+          user_email?: string | null
+        }
+        Update: {
+          attempted_at?: string
+          id?: string
+          ip_address?: unknown
+          success?: boolean
+          user_email?: string | null
         }
         Relationships: []
       }

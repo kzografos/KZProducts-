@@ -51,9 +51,9 @@ const resetForm = () => {
   }
 }
 
-// Watch for product changes
-watch(() => props.product, (newProduct) => {
-  if (newProduct) {
+// Watch for product changes OR drawer opening
+watch([() => props.product, () => props.open], ([newProduct, isOpen]) => {
+  if (isOpen && newProduct) {
     form.value = {
       name: newProduct.name,
       slug: newProduct.slug,
@@ -65,7 +65,8 @@ watch(() => props.product, (newProduct) => {
       images: newProduct.images || [],
       is_active: newProduct.is_active ?? true
     }
-  } else {
+  } else if (isOpen && !newProduct) {
+    // New product mode
     resetForm()
   }
 }, { immediate: true })

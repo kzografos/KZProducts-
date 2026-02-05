@@ -172,10 +172,7 @@ const handleLogout = async () => {
           <!-- Right side -->
           <div class="flex items-center gap-3">
             <!-- Notifications -->
-            <button class="relative rounded-lg p-2 text-slate-400 hover:bg-white/5 hover:text-white">
-              <Bell class="h-5 w-5" />
-              <span class="absolute right-1 top-1 h-2 w-2 rounded-full bg-violet-500" />
-            </button>
+            <AdminNotificationDropdown />
 
             <!-- User dropdown -->
             <div class="flex items-center gap-3 rounded-xl bg-white/5 px-3 py-1.5">
