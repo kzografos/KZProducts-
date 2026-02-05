@@ -1,22 +1,27 @@
-import DOMPurify from 'isomorphic-dompurify'
-
 /**
  * Sanitize text input to prevent XSS attacks
- * - Strips ALL HTML tags using DOMPurify
+ * - Strips ALL HTML tags using regex (serverless-compatible)
  * - Escapes special characters
  * - Trims whitespace
  */
 export function sanitizeText(text: string): string {
   if (!text || typeof text !== 'string') return ''
   
-  // First pass: DOMPurify strips all HTML tags
-  const clean = DOMPurify.sanitize(text, {
-    ALLOWED_TAGS: [],
-    ALLOWED_ATTR: [],
-    KEEP_CONTENT: true
-  })
+  // Strip all HTML tags
+  let clean = text.replace(/<[^>]*>/g, '')
   
-  // Second pass: Escape any remaining special characters
+  // Decode HTML entities first to catch encoded attacks
+  clean = clean
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#x27;/g, "'")
+    .replace(/&amp;/g, '&')
+  
+  // Strip tags again after decoding
+  clean = clean.replace(/<[^>]*>/g, '')
+  
+  // Escape special characters for safe storage/display
   return clean
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
