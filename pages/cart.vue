@@ -41,7 +41,7 @@ const decrementQuantity = (productId: string, currentQty: number) => {
       <div class="md:col-span-2 space-y-4">
         <div v-for="item in cartStore.items" :key="item.productId" class="flex gap-4 p-4 border rounded-lg bg-card">
           <div class="h-24 w-24 rounded-md overflow-hidden bg-muted flex-shrink-0 border">
-             <img :src="item.product.images?.[0] || '/placeholder.png'" class="object-cover w-full h-full" />
+             <NuxtImg :src="item.product.images?.[0] || '/placeholder.png'" :alt="item.product.name" loading="lazy" width="96" height="96" format="webp" class="object-cover w-full h-full" />
           </div>
           <div class="flex-1 flex flex-col justify-between">
             <div>

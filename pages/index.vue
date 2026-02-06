@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { defineAsyncComponent } from 'vue';
 import { Button } from "@/components/ui/button";
 import CategoryShowcase from "@/components/home/CategoryShowcase.vue";
 import AnimatedBackground from "@/components/ui/AnimatedBackground.vue";
-import HeroAnimatedBeam from "@/components/home/HeroAnimatedBeam.vue";
+const HeroAnimatedBeam = defineAsyncComponent(() => import("@/components/home/HeroAnimatedBeam.vue"));
 
 // Fetch frontmatter from content
 const { data: page } = await useAsyncData("index", () =>

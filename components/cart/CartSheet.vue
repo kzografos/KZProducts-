@@ -101,9 +101,13 @@ const decrementQuantity = (productId: string, currentQty: number) => {
           >
             <!-- Product Image -->
             <div class="h-20 w-20 rounded-md overflow-hidden bg-muted flex-shrink-0 border border-white/10">
-              <img 
+              <NuxtImg 
                 :src="item.product.images?.[0] || '/placeholder.png'" 
                 :alt="item.product.name"
+                loading="lazy"
+                width="80"
+                height="80"
+                format="webp"
                 class="object-cover w-full h-full" 
               />
             </div>

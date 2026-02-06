@@ -111,9 +111,13 @@ const triggerFileSelect = () => {
     <!-- Image Preview -->
     <div v-if="imageUrl" class="relative group">
       <div class="overflow-hidden rounded-xl border border-white/10 bg-white/5">
-        <img
+        <NuxtImg
           :src="imageUrl"
           alt="Uploaded image"
+          loading="lazy"
+          width="192"
+          height="192"
+          format="webp"
           class="w-full h-48 object-cover"
         />
         <!-- Overlay on hover -->

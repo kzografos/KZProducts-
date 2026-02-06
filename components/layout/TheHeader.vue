@@ -38,10 +38,10 @@ onMounted(async () => {
   window.addEventListener('scroll', handleScroll)
   onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   
-  // Fetch categories
+  // Fetch categories - only needed columns
   const { data } = await client
     .from('categories')
-    .select('*')
+    .select('id, name, slug')
     .order('sort_order', { ascending: true })
   
   if (data) categories.value = data
@@ -182,7 +182,7 @@ const getIcon = (slug: string) => categoryIcons[slug] || Cpu
         </div>
         <nav class="flex items-center space-x-1">
           <!-- Cart Sheet -->
-          <CartSheet />
+          <LazyCartSheet />
 
           <!-- User Menu -->
           <UserMenu />

@@ -200,9 +200,13 @@ const handleClose = () => {
               />
               <!-- Preview -->
               <div v-if="form.image_url" class="mt-3">
-                <img
+                <NuxtImg
                   :src="form.image_url"
                   alt="Category preview"
+                  loading="lazy"
+                  width="96"
+                  height="96"
+                  format="webp"
                   class="h-24 w-24 rounded-lg object-cover"
                   @error="form.image_url = ''"
                 />

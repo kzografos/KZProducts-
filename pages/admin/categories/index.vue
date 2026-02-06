@@ -148,10 +148,12 @@ onMounted(() => {
       >
         <!-- Image -->
         <div class="mb-4 aspect-video overflow-hidden rounded-xl bg-slate-800">
-          <img
+          <NuxtImg
             v-if="category.image_url"
             :src="category.image_url"
             :alt="category.name"
+            loading="lazy"
+            format="webp"
             class="h-full w-full object-cover"
           />
           <div v-else class="flex h-full items-center justify-center">

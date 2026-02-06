@@ -285,9 +285,13 @@ onMounted(() => {
             <!-- Product -->
             <td class="px-6 py-4">
               <div class="flex items-center gap-4">
-                <img
+                <NuxtImg
                   :src="product.images?.[0] || '/placeholder.png'"
                   :alt="product.name"
+                  loading="lazy"
+                  width="48"
+                  height="48"
+                  format="webp"
                   class="h-12 w-12 rounded-lg object-cover"
                 />
                 <div>

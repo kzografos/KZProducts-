@@ -232,9 +232,13 @@ const formatPrice = (price: number) => {
                     class="flex gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors"
                   >
                     <div class="h-16 w-16 rounded-lg overflow-hidden bg-muted flex-shrink-0 border border-white/10">
-                      <img 
+                      <NuxtImg 
                         :src="item.product.images?.[0] || '/placeholder.png'" 
                         :alt="item.product.name"
+                        loading="lazy"
+                        width="64"
+                        height="64"
+                        format="webp"
                         class="object-cover w-full h-full" 
                       />
                     </div>

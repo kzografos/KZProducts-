@@ -359,9 +359,13 @@ onMounted(() => {
                     :key="idx"
                     class="relative group"
                   >
-                    <img
+                    <NuxtImg
                       :src="img"
                       :alt="`Image ${idx + 2}`"
+                      loading="lazy"
+                      width="64"
+                      height="64"
+                      format="webp"
                       class="h-16 w-16 rounded-lg object-cover border border-white/10"
                     />
                     <button

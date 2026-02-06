@@ -28,7 +28,7 @@ const loading = ref(true)
 onMounted(async () => {
   const { data } = await client
     .from('categories')
-    .select('*')
+    .select('id, name, slug, description')
     .order('sort_order', { ascending: true })
     .limit(4)
   

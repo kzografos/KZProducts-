@@ -251,9 +251,13 @@ onMounted(() => {
             <div class="flex flex-col md:flex-row">
               <!-- Image -->
               <div class="md:w-64 shrink-0">
-                <img
+                <NuxtImg
                   :src="product.images?.[0] || '/placeholder.png'"
                   :alt="product.name"
+                  loading="lazy"
+                  width="256"
+                  height="256"
+                  format="webp"
                   class="h-64 w-full object-cover md:h-full"
                 />
               </div>

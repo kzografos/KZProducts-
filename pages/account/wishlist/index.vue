@@ -144,9 +144,13 @@ watch(user, (newUser) => {
       >
         <!-- Product Image -->
         <NuxtLink :to="`/products/${item.products.slug}`" class="block aspect-square overflow-hidden">
-          <img
+          <NuxtImg
             :src="item.products.images?.[0] || '/placeholder.png'"
             :alt="item.products.name"
+            loading="lazy"
+            width="300"
+            height="300"
+            format="webp"
             class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         </NuxtLink>

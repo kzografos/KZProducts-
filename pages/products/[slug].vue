@@ -239,9 +239,14 @@ const selectImage = (index: number) => {
         <!-- Image Gallery -->
         <div class="space-y-4">
           <div class="max-h-[400px] aspect-auto rounded-lg overflow-hidden relative flex items-center justify-center">
-            <img 
+            <NuxtImg 
               :src="imageSrc" 
               :alt="product.name" 
+              preset="product"
+              loading="eager"
+              fetchpriority="high"
+              width="800"
+              height="800"
               class="object-contain max-h-[400px] w-auto"
               @error="handleImageError"
             />
@@ -262,7 +267,7 @@ const selectImage = (index: number) => {
               :class="selectedImageIndex === i ? 'border-primary' : 'border-transparent hover:border-primary/50'"
               @click="selectImage(Number(i))"
             >
-              <img :src="img" class="object-cover w-full h-full" />
+              <NuxtImg :src="img" loading="lazy" width="100" height="100" format="webp" class="object-cover w-full h-full" />
             </div>
           </div>
         </div>
@@ -369,7 +374,7 @@ const selectImage = (index: number) => {
         
         <!-- Review Summary -->
         <div class="mb-8">
-          <ReviewSummary :stats="reviewStats" :loading="reviewsLoading && !reviews.length" />
+          <LazyReviewSummary :stats="reviewStats" :loading="reviewsLoading && !reviews.length" />
         </div>
         
         <!-- Review Form Sheet -->
@@ -381,7 +386,7 @@ const selectImage = (index: number) => {
                 Share your experience with this product. Minimum 10 characters required.
               </SheetDescription>
             </SheetHeader>
-            <ReviewForm
+            <LazyReviewForm
               :initial-rating="userReview?.rating || 0"
               :initial-title="userReview?.title || ''"
               :initial-comment="userReview?.comment || ''"
@@ -394,7 +399,7 @@ const selectImage = (index: number) => {
         </Sheet>
         
         <!-- Reviews List -->
-        <ReviewList
+        <LazyReviewList
           :reviews="reviews"
           :loading="reviewsLoading"
           :has-more="hasMoreReviews"

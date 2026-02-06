@@ -79,15 +79,18 @@ const discountPercentage = computed(() => {
       />
       
       <!-- Actual Image -->
-      <img 
+      <NuxtImg 
         v-if="!imageError"
         :src="product.images?.[0] || '/placeholder.png'" 
         :alt="product.name" 
+        preset="thumbnail"
+        loading="lazy"
+        width="300"
+        height="300"
         class="object-cover w-full h-full transition-all duration-700 group-hover:scale-105"
         :class="imageLoaded ? 'opacity-100' : 'opacity-0'"
         @error="handleImageError"
         @load="handleImageLoad"
-        loading="lazy"
       />
       
       <!-- Beautiful Hardware Placeholder (Apple-level clean) -->

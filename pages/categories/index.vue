@@ -7,7 +7,7 @@ const categories = ref<Database['public']['Tables']['categories']['Row'][]>([])
 const loading = ref(true)
 
 onMounted(async () => {
-    const { data } = await client.from('categories').select('*').order('sort_order', { ascending: true })
+    const { data } = await client.from('categories').select('id, name, slug, description, image_url').order('sort_order', { ascending: true })
     if (data) categories.value = data
     loading.value = false
 })
@@ -23,9 +23,13 @@ onMounted(async () => {
 
      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <NuxtLink v-for="cat in categories" :key="cat.id" :to="`/categories/${cat.slug}`" class="group relative overflow-hidden rounded-lg aspect-video border bg-muted">
-           <img 
+           <NuxtImg 
             v-if="cat.image_url" 
             :src="cat.image_url" 
+            :alt="cat.name"
+            loading="lazy"
+            format="webp"
+            quality="80"
             class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
            />
            <div v-else class="w-full h-full bg-muted flex items-center justify-center text-muted-foreground">
