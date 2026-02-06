@@ -88,9 +88,9 @@ const getIconColor = (slug: string) => categoryIconColors[slug] || 'bg-slate-500
             </p>
             
             <!-- Browse Link -->
-            <div class="flex items-center text-sm text-slate-500 group-hover:text-violet-400 transition-colors">
+            <div class="flex items-center text-sm text-slate-300 group-hover:text-violet-400 transition-colors">
               <span>Browse products</span>
-              <ArrowRight class="w-4 h-4 ml-2 transform transition-transform group-hover:translate-x-1" />
+              <ArrowRight class="w-4 h-4 ml-2 transform transition-transform group-hover:translate-x-1" aria-hidden="true" />
             </div>
           </div>
         </div>

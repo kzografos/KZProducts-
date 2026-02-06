@@ -107,24 +107,21 @@ import {
         <div>
           <h3 class="text-sm font-semibold text-white mb-4">Connect</h3>
           <div class="flex gap-3">
-            <!-- TODO: Add real X/Twitter URL -->
-            <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
-              <Twitter class="h-4 w-4" />
+            <!-- Social Media Links with Accessibility Labels -->
+            <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="Follow us on X (Twitter)" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
+              <Twitter class="h-4 w-4" aria-hidden="true" />
             </a>
-            <!-- TODO: Add real Facebook URL -->
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
-              <Facebook class="h-4 w-4" />
+            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Facebook" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
+              <Facebook class="h-4 w-4" aria-hidden="true" />
             </a>
-            <!-- TODO: Add real Instagram URL -->
-            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
-              <Instagram class="h-4 w-4" />
+            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
+              <Instagram class="h-4 w-4" aria-hidden="true" />
             </a>
-            <!-- TODO: Add real LinkedIn URL -->
-            <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
-              <Linkedin class="h-4 w-4" />
+            <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="Connect on LinkedIn" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
+              <Linkedin class="h-4 w-4" aria-hidden="true" />
             </a>
-            <a href="mailto:support@kzproducts.com" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
-              <Mail class="h-4 w-4" />
+            <a href="mailto:support@kzproducts.com" aria-label="Email support at KZProducts" class="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-violet-400 hover:border-violet-500/30 transition-all">
+              <Mail class="h-4 w-4" aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -148,12 +145,12 @@ import {
         <div
           class="flex flex-col md:flex-row justify-between items-center gap-4"
         >
-          <p class="text-sm text-slate-500">
+          <p class="text-sm text-slate-400">
             © {{ new Date().getFullYear() }} KZProducts. All rights reserved.
           </p>
-          <div class="flex items-center gap-4 text-sm text-slate-500">
+          <div class="flex items-center gap-4 text-sm text-slate-400">
             <span class="flex items-center gap-1">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
               All systems operational
             </span>
           </div>
