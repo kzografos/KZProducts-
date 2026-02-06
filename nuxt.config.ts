@@ -152,8 +152,10 @@ export default defineNuxtConfig({
     '/categories': { swr: 60 * 60, cache: { maxAge: 60 * 30, staleMaxAge: 60 * 60 } },
     '/categories/**': { swr: 60 * 30 },
     
-    // API routes - short cache with CORS
-    '/api/**': { cors: true, cache: { maxAge: 60, staleMaxAge: 60 * 5 } },
+    // API routes - disable cache for safe defaults, enable selectively if needed
+    '/api/**': { cors: true, cache: false },
+    '/api/products/**': { cors: true, cache: { maxAge: 60, staleMaxAge: 60 * 5 } },
+    '/api/categories/**': { cors: true, cache: { maxAge: 60 * 60, staleMaxAge: 60 * 60 * 24 } },
     
     // Auth routes - no cache
     '/auth/**': { cache: false },
