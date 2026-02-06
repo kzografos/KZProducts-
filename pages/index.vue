@@ -65,7 +65,7 @@ const { data: page } = await useAsyncData("index", () =>
             :to="page?.hero?.cta_secondary_link || '/about'"
             class="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/5 px-8 py-3 text-base font-medium text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white/30"
           >
-            {{ page?.hero?.cta_secondary || "Learn More" }}
+            {{ page?.hero?.cta_secondary || "Learn More About Us" }}
           </NuxtLink>
         </div>
       </div>
