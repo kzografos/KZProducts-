@@ -1,4 +1,4 @@
-import type { RealtimeChannel } from '@supabase/supabase-js'
+
 import { toast } from 'vue-sonner'
 
 export type NotificationType = 
@@ -31,7 +31,7 @@ export function useNotifications() {
   const notifications = ref<AdminNotification[]>([])
   const unreadCount = ref(0)
   const loading = ref(false)
-  const channel = ref<RealtimeChannel | null>(null)
+  const channel = ref<ReturnType<typeof client.channel> | null>(null)
 
   // Fetch notifications
   async function fetchNotifications(limit = 20) {

@@ -1,4 +1,4 @@
-import type { Database } from '~/types/database.types'
+import type { Database, Json } from '~/types/database.types'
 
 // Type definitions for notifications
 export type NotificationType = 
@@ -73,7 +73,7 @@ export async function createNotification(
     link: params.link || null,
     priority: params.priority || 'medium',
     related_id: params.relatedId || null,
-    metadata: params.metadata || {},
+    metadata: (params.metadata || {}) as unknown as Json,
     is_read: false
   }))
 
