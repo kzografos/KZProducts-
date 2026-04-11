@@ -14,7 +14,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxtjs/google-fonts',
     '@nuxtjs/fontaine',
-    '@vercel/speed-insights',
+    '@vercel/speed-insights'   
   ],
   
   // Image optimization
