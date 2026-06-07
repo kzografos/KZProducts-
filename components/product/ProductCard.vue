@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ShoppingCart, Cpu, Sparkles } from 'lucide-vue-next'
+import { ShoppingCart, Cpu } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -52,6 +52,8 @@ const formatPrice = (price: number) => {
   return new Intl.NumberFormat('el-GR', { style: 'currency', currency: 'EUR' }).format(price)
 }
 
+const productPath = computed(() => `/products/${props.product.slug}`)
+
 const handleAddToCart = () => {
   cartStore.addToCart(props.product)
   toast.success(`${props.product.name} added to cart!`, {
@@ -69,7 +71,17 @@ const discountPercentage = computed(() => {
 </script>
 
 <template>
-  <Card class="group relative overflow-hidden h-full flex flex-col bg-gradient-to-b from-card to-card/50 border-border/50 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 hover:border-primary/30 hover:-translate-y-1">
+  <Card
+    class="group relative overflow-hidden h-full flex flex-col bg-gradient-to-b from-card to-card/50 border-border/50 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 hover:border-primary/30 hover:-translate-y-1 focus-within:border-primary/40 cursor-pointer"
+  >
+    <NuxtLink
+      :to="productPath"
+      class="absolute inset-0 z-10 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      :aria-label="`View ${product.name}`"
+    >
+      <span class="sr-only">View {{ product.name }}</span>
+    </NuxtLink>
+
     <!-- Product Image -->
     <div class="aspect-square relative overflow-hidden bg-gradient-to-br from-muted/50 to-muted">
       <!-- Loading Skeleton -->
@@ -112,7 +124,7 @@ const discountPercentage = computed(() => {
       <!-- Sale Badge -->
       <Badge 
         v-if="discountPercentage > 0" 
-        class="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-rose-500 text-white border-0 shadow-lg shadow-red-500/25 font-semibold"
+        class="pointer-events-none absolute top-3 left-3 z-20 bg-gradient-to-r from-red-500 to-rose-500 text-white border-0 shadow-lg shadow-red-500/25 font-semibold"
       >
         -{{ discountPercentage }}%
       </Badge>
@@ -121,7 +133,7 @@ const discountPercentage = computed(() => {
       <Badge 
         v-if="product.stock_quantity > 0 && product.stock_quantity < 5" 
         variant="outline"
-        class="absolute top-3 right-3 bg-amber-500/10 text-amber-500 border-amber-500/30 backdrop-blur-sm"
+        class="pointer-events-none absolute top-3 right-3 z-20 bg-amber-500/10 text-amber-500 border-amber-500/30 backdrop-blur-sm"
       >
         Only {{ product.stock_quantity }} left
       </Badge>
@@ -129,15 +141,15 @@ const discountPercentage = computed(() => {
       <!-- Wishlist Button (top-right, moves if stock badge) -->
       <WishlistButton 
         :product-id="product.id"
-        class="absolute z-10"
+        class="absolute z-20"
         :class="product.stock_quantity > 0 && product.stock_quantity < 5 ? 'top-12 right-3' : 'top-3 right-3'"
       />
       
       <!-- Quick Add Overlay -->
-      <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-        <Button 
-          @click.prevent="handleAddToCart" 
-          class="w-full bg-primary/90 backdrop-blur-sm hover:bg-primary shadow-lg"
+      <div class="absolute inset-x-0 bottom-0 z-20 p-3 sm:p-4 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+        <Button
+          @click.prevent.stop="handleAddToCart"
+          class="pointer-events-auto w-full bg-primary/90 backdrop-blur-sm hover:bg-primary shadow-lg"
           :disabled="product.stock_quantity === 0"
         >
           <ShoppingCart class="w-4 h-4 mr-2" />
@@ -147,7 +159,7 @@ const discountPercentage = computed(() => {
     </div>
     
     <!-- Product Info -->
-    <CardHeader class="p-4 pb-2 flex-none">
+    <CardHeader class="pointer-events-none relative z-20 p-4 pb-2 flex-none">
       <!-- Category -->
       <div v-if="product.categories" class="flex items-center gap-1.5 mb-1">
         <div class="w-1.5 h-1.5 rounded-full bg-primary/60" />
@@ -164,27 +176,22 @@ const discountPercentage = computed(() => {
         </span>
       </div>
       <!-- Product Name -->
-      <CardTitle class="line-clamp-2 text-base leading-snug tracking-tight">
-        <NuxtLink 
-          :to="`/products/${product.slug}`"
-          class="hover:text-primary transition-colors duration-200"
-        >
-          {{ product.name }}
-        </NuxtLink>
+      <CardTitle class="line-clamp-2 text-base leading-snug tracking-tight transition-colors duration-200 group-hover:text-primary">
+        {{ product.name }}
       </CardTitle>
     </CardHeader>
     
     <!-- Description -->
-    <CardContent class="p-4 pt-0 flex-1">
+    <CardContent class="pointer-events-none relative z-20 p-4 pt-0 flex-1">
       <p v-if="product.description" class="text-sm text-muted-foreground/80 line-clamp-2 leading-relaxed">
         {{ product.description }}
       </p>
     </CardContent>
     
     <!-- Price & Actions -->
-    <CardFooter class="p-4 pt-2 border-t border-border/50 bg-muted/20 flex items-center justify-between gap-4">
-      <div class="flex flex-col">
-        <span class="text-xl font-bold tracking-tight text-foreground">
+    <CardFooter class="pointer-events-none relative z-20 p-4 border-t border-border/50 bg-muted/20 flex items-center justify-between gap-3">
+      <div class="flex min-w-0 flex-col">
+        <span class="truncate text-xl font-bold tracking-tight text-foreground">
           {{ formatPrice(product.price) }}
         </span>
         <span 
@@ -195,14 +202,17 @@ const discountPercentage = computed(() => {
         </span>
       </div>
       
-      <Button 
-        @click="handleAddToCart" 
+      <Button
+        @click.prevent.stop="handleAddToCart"
         size="sm" 
         :disabled="product.stock_quantity === 0"
-        class="shadow-sm hover:shadow-md transition-shadow"
+        class="pointer-events-auto shrink-0 shadow-sm hover:shadow-md transition-shadow"
       >
         <ShoppingCart class="w-4 h-4" />
-        <span class="sr-only">Add to cart</span>
+        <span class="hidden min-[360px]:inline">
+          {{ product.stock_quantity > 0 ? 'Add' : 'Out' }}
+        </span>
+        <span class="sr-only">{{ product.stock_quantity > 0 ? 'Add to cart' : 'Out of stock' }}</span>
       </Button>
     </CardFooter>
   </Card>

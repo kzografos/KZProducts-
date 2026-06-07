@@ -47,7 +47,7 @@ export const useAuth = () => {
         console.error('Error fetching profile:', error)
       }
       
-      profile.value = data
+      profile.value = (data as Profile | null) ?? null
     } finally {
       loading.value = false
     }
@@ -64,11 +64,13 @@ export const useAuth = () => {
       .select()
       .single()
     
-    if (!error && data) {
-      profile.value = data
+    const nextProfile = (data as Profile | null) ?? null
+
+    if (!error && nextProfile) {
+      profile.value = nextProfile
     }
     
-    return { data, error }
+    return { data: nextProfile, error }
   }
   
   // Watch for auth state changes

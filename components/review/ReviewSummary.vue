@@ -35,7 +35,7 @@ const ratingCounts = computed(() => {
 </script>
 
 <template>
-  <div class="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+  <div class="overflow-hidden rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
     <!-- Loading State -->
     <div v-if="loading" class="animate-pulse space-y-4">
       <div class="flex items-center gap-4">
@@ -52,7 +52,7 @@ const ratingCounts = computed(() => {
     
     <!-- Content -->
     <template v-else-if="stats">
-      <div class="flex flex-col sm:flex-row sm:items-start gap-6">
+      <div class="flex min-w-0 flex-col gap-6 sm:flex-row sm:items-start">
         <!-- Overall Rating -->
         <div class="flex items-center gap-4">
           <div class="flex h-16 w-16 items-center justify-center rounded-xl bg-violet-500/20">
@@ -70,20 +70,20 @@ const ratingCounts = computed(() => {
         </div>
         
         <!-- Rating Distribution -->
-        <div class="flex-1 space-y-2">
+        <div class="min-w-0 flex-1 space-y-2">
           <div 
             v-for="rating in [5, 4, 3, 2, 1]" 
             :key="rating"
-            class="flex items-center gap-3"
+            class="flex min-w-0 items-center gap-2 sm:gap-3"
           >
-            <span class="w-3 text-sm text-slate-400">{{ rating }}</span>
-            <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden">
+            <span class="w-3 shrink-0 text-sm text-slate-400">{{ rating }}</span>
+            <div class="h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-white/10">
               <div 
                 class="h-full rounded-full bg-violet-500 transition-all duration-500"
                 :style="{ width: `${ratingPercentages[rating as keyof typeof ratingPercentages]}%` }"
               />
             </div>
-            <span class="w-8 text-right text-sm text-slate-400">
+            <span class="w-8 shrink-0 text-right text-sm text-slate-400">
               {{ ratingCounts[rating as keyof typeof ratingCounts] }}
             </span>
           </div>

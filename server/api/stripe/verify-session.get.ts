@@ -48,15 +48,30 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    // Use service role client to bypass RLS - webhook already confirmed payment
+    // Use service role client to bypass RLS - Stripe already confirmed payment
     const client = await serverSupabaseServiceRole<Database>(event)
+    const stripePaymentIntent = typeof session.payment_intent === 'string'
+      ? session.payment_intent
+      : session.payment_intent?.id || session.id
 
-    // Fetch order from database
-    const { data: order } = await client
+    // Mark paid here as a fallback for local/test flows where the webhook is delayed or not running.
+    const { data: order, error: updateError } = await client
       .from('orders')
-      .select('*')
+      .update({
+        status: 'paid',
+        stripe_payment_intent: stripePaymentIntent
+      })
       .eq('id', orderId)
+      .select('*')
       .single()
+
+    if (updateError) {
+      console.error('Failed to update paid order from session verification:', updateError)
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Failed to update paid order'
+      })
+    }
 
     return {
       success: true,
@@ -68,6 +83,10 @@ export default defineEventHandler(async (event) => {
 
   } catch (error: any) {
     console.error('Session verification error:', error.message)
+    if (error.statusCode) {
+      throw error
+    }
+
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to verify session'

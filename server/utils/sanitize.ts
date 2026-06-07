@@ -22,7 +22,7 @@ export function sanitizeText(text: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#x27;')
-    .replace(/&(?!(lt|gt|quot|#x27);)/g, '&amp;')
+    .replace(/&(?!(amp|lt|gt|quot|#x27);)/g, '&amp;')
     .trim()
 }
 

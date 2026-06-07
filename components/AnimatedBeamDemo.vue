@@ -1,28 +1,49 @@
 <script setup lang="ts">
-interface Props {
-  curvature?: number;
-  reverse?: boolean;
-  pathColor?: string;
-  pathWidth?: number;
-  pathOpacity?: number;
-  gradientStartColor?: string;
-  gradientStopColor?: string;
-  delay?: number;
-  duration?: number;
-  startXOffset?: number;
-  startYOffset?: number;
-  endXOffset?: number;
-  endYOffset?: number;
-}
+const containerRef = useTemplateRef<HTMLDivElement>("containerRef");
+const div1Ref = useTemplateRef<HTMLDivElement>("div1Ref");
+const div2Ref = useTemplateRef<HTMLDivElement>("div2Ref");
+const div3Ref = useTemplateRef<HTMLDivElement>("div3Ref");
+const div4Ref = useTemplateRef<HTMLDivElement>("div4Ref");
+const div5Ref = useTemplateRef<HTMLDivElement>("div5Ref");
+const div6Ref = useTemplateRef<HTMLDivElement>("div6Ref");
+const div7Ref = useTemplateRef<HTMLDivElement>("div7Ref");
 
-const containerRef = useTemplateRef("containerRef");
-const div1Ref = useTemplateRef("div1Ref");
-const div2Ref = useTemplateRef("div2Ref");
-const div3Ref = useTemplateRef("div3Ref");
-const div4Ref = useTemplateRef("div4Ref");
-const div5Ref = useTemplateRef("div5Ref");
-const div6Ref = useTemplateRef("div6Ref");
-const div7Ref = useTemplateRef("div7Ref");
+type BeamRefs = {
+  container: HTMLDivElement;
+  div1: HTMLDivElement;
+  div2: HTMLDivElement;
+  div3: HTMLDivElement;
+  div4: HTMLDivElement;
+  div5: HTMLDivElement;
+  div6: HTMLDivElement;
+  div7: HTMLDivElement;
+};
+
+const beamRefs = computed<BeamRefs | null>(() => {
+  if (
+    !containerRef.value ||
+    !div1Ref.value ||
+    !div2Ref.value ||
+    !div3Ref.value ||
+    !div4Ref.value ||
+    !div5Ref.value ||
+    !div6Ref.value ||
+    !div7Ref.value
+  ) {
+    return null;
+  }
+
+  return {
+    container: containerRef.value,
+    div1: div1Ref.value,
+    div2: div2Ref.value,
+    div3: div3Ref.value,
+    div4: div4Ref.value,
+    div5: div5Ref.value,
+    div6: div6Ref.value,
+    div7: div7Ref.value,
+  };
+});
 </script>
 
 <template>
@@ -104,44 +125,46 @@ const div7Ref = useTemplateRef("div7Ref");
       </div>
     </div>
 
-    <AnimatedBeam
-      :container-ref="containerRef"
-      :from-ref="div1Ref"
-      :to-ref="div4Ref"
-      :curvature="-75"
-      :end-y-offset="-10"
-    />
-    <AnimatedBeam
-      :container-ref="containerRef"
-      :from-ref="div2Ref"
-      :to-ref="div4Ref"
-    />
-    <AnimatedBeam
-      :container-ref="containerRef"
-      :from-ref="div3Ref"
-      :to-ref="div4Ref"
-      :curvature="75"
-      :end-y-offset="10"
-    />
-    <AnimatedBeam
-      :container-ref="containerRef"
-      :from-ref="div5Ref"
-      :to-ref="div4Ref"
-      :curvature="-75"
-      :end-y-offset="-10"
-    />
-    <AnimatedBeam
-      :container-ref="containerRef"
-      :from-ref="div6Ref"
-      :to-ref="div4Ref"
-    />
-    <AnimatedBeam
-      :container-ref="containerRef"
-      :from-ref="div7Ref"
-      :to-ref="div4Ref"
-      :curvature="75"
-      :end-y-offset="10"
-    />
+    <template v-if="beamRefs">
+      <AnimatedBeam
+        :container-ref="beamRefs.container"
+        :from-ref="beamRefs.div1"
+        :to-ref="beamRefs.div4"
+        :curvature="-75"
+        :end-y-offset="-10"
+      />
+      <AnimatedBeam
+        :container-ref="beamRefs.container"
+        :from-ref="beamRefs.div2"
+        :to-ref="beamRefs.div4"
+      />
+      <AnimatedBeam
+        :container-ref="beamRefs.container"
+        :from-ref="beamRefs.div3"
+        :to-ref="beamRefs.div4"
+        :curvature="75"
+        :end-y-offset="10"
+      />
+      <AnimatedBeam
+        :container-ref="beamRefs.container"
+        :from-ref="beamRefs.div5"
+        :to-ref="beamRefs.div4"
+        :curvature="-75"
+        :end-y-offset="-10"
+      />
+      <AnimatedBeam
+        :container-ref="beamRefs.container"
+        :from-ref="beamRefs.div6"
+        :to-ref="beamRefs.div4"
+      />
+      <AnimatedBeam
+        :container-ref="beamRefs.container"
+        :from-ref="beamRefs.div7"
+        :to-ref="beamRefs.div4"
+        :curvature="75"
+        :end-y-offset="10"
+      />
+    </template>
   </div>
 </template>
 

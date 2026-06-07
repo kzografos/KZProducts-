@@ -13,7 +13,8 @@ export default defineNuxtConfig({
     '@nuxtjs/supabase',
     '@nuxt/content',
     '@nuxtjs/google-fonts',
-    '@nuxtjs/fontaine'
+    '@nuxtjs/fontaine',
+    '@vercel/speed-insights'   
   ],
   
   // Image optimization

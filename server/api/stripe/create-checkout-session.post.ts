@@ -165,6 +165,11 @@ export default defineEventHandler(async (event) => {
     }
 
     const baseUrl = getRequestURL(event).origin
+    const orderMetadata = {
+      order_id: order.id,
+      order_number: orderNumber,
+      user_id: user.id
+    }
 
     // Create Stripe Checkout Session with order metadata
     const session = await stripe.checkout.sessions.create({
@@ -174,10 +179,9 @@ export default defineEventHandler(async (event) => {
       success_url: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/cart`,
       customer_email: user.email,
-      metadata: {
-        order_id: order.id,
-        order_number: orderNumber,
-        user_id: user.id
+      metadata: orderMetadata,
+      payment_intent_data: {
+        metadata: orderMetadata
       }
     })
 

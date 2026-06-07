@@ -3,6 +3,10 @@ import { Cpu, MonitorSpeaker, MemoryStick, HardDrive, Loader2, ArrowRight } from
 import type { Database } from '~/types/database.types'
 
 const client = useSupabaseClient<Database>()
+type CategoryPreview = Pick<
+  Database['public']['Tables']['categories']['Row'],
+  'id' | 'name' | 'slug' | 'description'
+>
 
 // Category icon mapping
 const categoryIcons: Record<string, any> = {
@@ -22,7 +26,7 @@ const categoryIconColors: Record<string, string> = {
   storage: 'bg-amber-500/20 text-amber-400',
 }
 
-const categories = ref<Database['public']['Tables']['categories']['Row'][]>([])
+const categories = ref<CategoryPreview[]>([])
 const loading = ref(true)
 
 onMounted(async () => {
@@ -32,7 +36,7 @@ onMounted(async () => {
     .order('sort_order', { ascending: true })
     .limit(4)
   
-  if (data) categories.value = data
+  if (data) categories.value = data as CategoryPreview[]
   loading.value = false
 })
 

@@ -4,7 +4,18 @@ import { toast } from 'vue-sonner'
 import type { Database } from '~/types/database.types'
 
 type Product = Database['public']['Tables']['products']['Row']
-type ProductInsert = Database['public']['Tables']['products']['Insert']
+
+interface ProductForm {
+  name: string
+  slug: string
+  description: string
+  price: number
+  compare_at_price: number | null
+  stock_quantity: number
+  category_id: string | null
+  images: string[]
+  is_active: boolean
+}
 
 interface Props {
   open: boolean
@@ -19,9 +30,7 @@ const emit = defineEmits<{
 
 const client = useSupabaseClient<Database>()
 
-// Form state
-const loading = ref(false)
-const form = ref<ProductInsert>({
+const createEmptyForm = (): ProductForm => ({
   name: '',
   slug: '',
   description: '',
@@ -33,22 +42,16 @@ const form = ref<ProductInsert>({
   is_active: true
 })
 
+// Form state
+const loading = ref(false)
+const form = ref<ProductForm>(createEmptyForm())
+
 // Categories for dropdown
 const categories = ref<{ id: string; name: string }[]>([])
 
 // Reset form - MUST be defined before watch that uses it
 const resetForm = () => {
-  form.value = {
-    name: '',
-    slug: '',
-    description: '',
-    price: 0,
-    compare_at_price: null,
-    stock_quantity: 0,
-    category_id: null,
-    images: [],
-    is_active: true
-  }
+  form.value = createEmptyForm()
 }
 
 // Watch for product changes OR drawer opening

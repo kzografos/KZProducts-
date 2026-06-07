@@ -1,38 +1,55 @@
 import { defineStore, skipHydrate } from 'pinia'
+import type { Ref } from 'vue'
 import type { Database } from '~/types/database.types'
 
-type Product = Database['public']['Tables']['products']['Row'] & {
+export interface CartProduct {
+  id: string
+  name: string
+  slug: string
+  price: number
+  images?: string[] | null
   categories?: { name: string; slug: string } | null
 }
 
 export interface CartItem {
   productId: string
-  product: Product
+  product: CartProduct
   quantity: number
 }
 
 const CART_STORAGE_KEY = 'kz-cart'
+const hasBrowserStorage = () =>
+  typeof window !== 'undefined' && typeof window.localStorage !== 'undefined'
+
+const toCartProduct = (product: CartProduct): CartProduct => ({
+  id: product.id,
+  name: product.name,
+  slug: product.slug,
+  price: product.price,
+  images: product.images ?? null,
+  categories: product.categories ?? null,
+})
 
 export const useCartStore = defineStore('cart', () => {
   // State - skipHydrate prevents SSR/client mismatch
-  const items = ref<CartItem[]>([])
+  const items = ref<CartItem[]>([]) as Ref<CartItem[]>
   const isHydrated = ref(false)
   const isSyncing = ref(false)
   
   // Get Supabase client and user (only on client-side)
   const getSupabaseClient = () => {
-    if (import.meta.server) return null
+    if (!hasBrowserStorage()) return null
     return useSupabaseClient<Database>()
   }
   
   const getSupabaseUser = () => {
-    if (import.meta.server) return null
+    if (!hasBrowserStorage()) return null
     return useSupabaseUser()
   }
 
   // Initialize from localStorage (client-side only)
   const initFromStorage = () => {
-    if (import.meta.client && !isHydrated.value) {
+    if (hasBrowserStorage() && !isHydrated.value) {
       try {
         const saved = localStorage.getItem(CART_STORAGE_KEY)
         if (saved) {
@@ -47,7 +64,7 @@ export const useCartStore = defineStore('cart', () => {
 
   // Persist to localStorage whenever items change
   const saveToStorage = () => {
-    if (import.meta.client) {
+    if (hasBrowserStorage()) {
       try {
         localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items.value))
       } catch (e) {
@@ -84,7 +101,7 @@ export const useCartStore = defineStore('cart', () => {
             // Add DB item to local cart
             items.value.push({
               productId: dbItem.product_id,
-              product: dbItem.products as Product,
+              product: toCartProduct(dbItem.products as CartProduct),
               quantity: dbItem.quantity
             })
           } else if (existingLocal) {
@@ -124,7 +141,7 @@ export const useCartStore = defineStore('cart', () => {
   }, { deep: true })
 
   // Actions
-  const addToCart = (product: Product, quantity = 1) => {
+  const addToCart = (product: CartProduct, quantity = 1) => {
     initFromStorage() // Ensure hydrated
     
     const existing = items.value.find(i => i.productId === product.id)
@@ -133,7 +150,7 @@ export const useCartStore = defineStore('cart', () => {
     } else {
       items.value.push({
         productId: product.id,
-        product,
+        product: toCartProduct(product),
         quantity
       })
     }

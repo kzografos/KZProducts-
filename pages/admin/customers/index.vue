@@ -3,7 +3,10 @@ import { Users, Search, Mail, Calendar, ChevronLeft, ChevronRight } from 'lucide
 import { toast } from 'vue-sonner'
 import type { Database } from '~/types/database.types'
 
-type Profile = Database['public']['Tables']['profiles']['Row']
+type CustomerProfile = Pick<
+  Database['public']['Tables']['profiles']['Row'],
+  'id' | 'full_name' | 'email' | 'created_at' | 'is_admin'
+>
 
 definePageMeta({
   layout: 'admin',
@@ -13,7 +16,7 @@ definePageMeta({
 const client = useSupabaseClient<Database>()
 
 // State
-const customers = ref<Profile[]>([])
+const customers = ref<CustomerProfile[]>([])
 const loading = ref(true)
 const searchQuery = ref('')
 const currentPage = ref(1)
@@ -25,11 +28,11 @@ const fetchCustomers = async () => {
   try {
     const { data, error } = await client
       .from('profiles')
-      .select('*')
+      .select('id, full_name, email, created_at, is_admin')
       .order('created_at', { ascending: false })
     
     if (error) throw error
-    customers.value = data || []
+    customers.value = (data as CustomerProfile[] | null) || []
   } catch (error: any) {
     toast.error('Failed to load customers')
     console.error(error)
@@ -104,8 +107,8 @@ onMounted(() => {
       </p>
     </div>
 
-    <div v-else class="overflow-hidden rounded-2xl border border-white/10 bg-white/5">
-      <table class="w-full">
+    <div v-else class="overflow-x-auto rounded-2xl border border-white/10 bg-white/5">
+      <table class="min-w-[680px] w-full">
         <thead>
           <tr class="border-b border-white/10 text-left text-sm text-slate-400">
             <th class="px-6 py-4 font-medium">Customer</th>

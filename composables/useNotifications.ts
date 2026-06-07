@@ -214,7 +214,7 @@ export function useNotifications() {
   // Unsubscribe from realtime
   function unsubscribe() {
     if (channel.value) {
-      client.removeChannel(channel.value)
+      client.removeChannel(channel.value as Parameters<typeof client.removeChannel>[0])
       channel.value = null
     }
   }

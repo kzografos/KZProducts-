@@ -175,18 +175,18 @@ const handleLogout = async () => {
       </DropdownMenu>
 
       <!-- Logged Out: Login / Sign Up Button -->
-      <div v-if="!user" class="flex items-center gap-2">
+      <div v-if="!user" class="flex items-center gap-1 min-[380px]:gap-2">
         <Button
           variant="ghost"
           size="sm"
-          class="text-foreground/70 hover:text-foreground hover:bg-white/10"
+          class="px-2 text-foreground/70 hover:text-foreground hover:bg-white/10 min-[380px]:px-3"
           as-child
         >
           <NuxtLink to="/auth/login">Login</NuxtLink>
         </Button>
         <Button
           size="sm"
-          class="bg-primary/90 hover:bg-primary shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all"
+          class="hidden bg-primary/90 hover:bg-primary shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all min-[380px]:inline-flex"
           as-child
         >
           <NuxtLink to="/auth/register">Sign Up</NuxtLink>

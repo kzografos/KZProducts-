@@ -3,12 +3,17 @@ import { Loader2 } from 'lucide-vue-next'
 import type { Database } from '~/types/database.types'
 
 const client = useSupabaseClient<Database>()
-const categories = ref<Database['public']['Tables']['categories']['Row'][]>([])
+type CategoryListItem = Pick<
+  Database['public']['Tables']['categories']['Row'],
+  'id' | 'name' | 'slug' | 'description' | 'image_url'
+>
+
+const categories = ref<CategoryListItem[]>([])
 const loading = ref(true)
 
 onMounted(async () => {
     const { data } = await client.from('categories').select('id, name, slug, description, image_url').order('sort_order', { ascending: true })
-    if (data) categories.value = data
+    if (data) categories.value = data as CategoryListItem[]
     loading.value = false
 })
 </script>

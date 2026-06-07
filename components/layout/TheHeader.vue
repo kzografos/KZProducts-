@@ -13,13 +13,18 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from '~/components/ui/sheet'
 import type { Database } from '~/types/database.types'
 
+type HeaderCategory = Pick<Database['public']['Tables']['categories']['Row'], 'id' | 'name' | 'slug'>
+
 const user = useSupabaseUser()
 const client = useSupabaseClient<Database>()
+const route = useRoute()
 const router = useRouter()
 
 const searchQuery = ref('')
 const isScrolled = ref(false)
-const categories = ref<Database['public']['Tables']['categories']['Row'][]>([])
+const mobileMenuOpen = ref(false)
+const categories = ref<HeaderCategory[]>([])
+const showGlobalSearch = computed(() => route.path !== '/products')
 
 // Category icon mapping
 const categoryIcons: Record<string, any> = {
@@ -59,6 +64,28 @@ const handleSearch = () => {
 }
 
 const getIcon = (slug: string) => categoryIcons[slug] || Cpu
+const closeMobileMenu = () => {
+  mobileMenuOpen.value = false
+}
+
+const isRouteActive = (path: string) => route.path === path
+const isCategoryActive = (slug: string) => route.path === `/categories/${slug}`
+
+const mobileNavLinkClass = (path: string) => [
+  'flex items-center rounded-lg border px-3 py-2.5 text-sm font-medium transition-all',
+  isRouteActive(path)
+    ? 'border-violet-500/40 bg-violet-500/15 text-violet-300'
+    : 'border-white/10 bg-white/[0.03] text-slate-100 hover:border-violet-500/30 hover:bg-violet-500/10 hover:text-violet-300'
+]
+
+const mobileCategoryLinkClass = (slug: string) => [
+  'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all',
+  isCategoryActive(slug)
+    ? 'bg-violet-500/15 text-violet-300'
+    : 'text-slate-200 hover:bg-white/5 hover:text-violet-300'
+]
+
+watch(() => route.fullPath, closeMobileMenu)
 </script>
 
 <template>
@@ -73,38 +100,75 @@ const getIcon = (slug: string) => categoryIcons[slug] || Cpu
     <!-- Glassmorphism gradient overlay -->
     <div class="absolute inset-0 bg-gradient-to-r from-violet-500/5 via-transparent to-violet-500/5 pointer-events-none" />
     
-    <div class="container relative flex h-16 items-center">
+    <div class="container relative flex h-16 items-center gap-2">
       <!-- Mobile Menu -->
-      <Sheet>
+      <Sheet v-model:open="mobileMenuOpen">
         <SheetTrigger as-child>
-          <Button variant="ghost" class="mr-2 px-0 text-base hover:bg-white/10 focus-visible:bg-white/10 focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden">
+          <Button variant="ghost" class="shrink-0 px-0 text-base hover:bg-white/10 focus-visible:bg-white/10 focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden">
             <Menu class="h-6 w-6" />
             <span class="sr-only">Toggle Menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" class="pr-0 bg-background/95 backdrop-blur-xl border-r border-white/10">
-          <nav class="flex flex-col space-y-4">
-            <NuxtLink to="/" class="flex items-center gap-2 text-lg font-bold">
+        <SheetContent side="left" class="w-[min(84vw,22rem)] bg-background/95 p-0 backdrop-blur-xl border-r border-white/10">
+          <nav class="flex h-full flex-col gap-6 overflow-y-auto px-5 py-6 pr-8">
+            <NuxtLink to="/" class="flex items-center gap-2 text-lg font-bold" @click="closeMobileMenu">
               <Sparkles class="h-5 w-5 text-primary" />
               KZProducts
             </NuxtLink>
-            <NuxtLink to="/products" class="transition-colors hover:text-primary">Products</NuxtLink>
+
             <div class="space-y-2">
-              <span class="text-sm text-muted-foreground">Categories</span>
-              <div class="flex flex-col space-y-1 pl-2">
+              <NuxtLink
+                to="/products"
+                :class="mobileNavLinkClass('/products')"
+                @click="closeMobileMenu"
+              >
+                Products
+              </NuxtLink>
+            </div>
+
+            <div class="space-y-2 border-t border-white/10 pt-4">
+              <span class="px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Categories</span>
+              <div class="flex flex-col gap-1">
                 <NuxtLink 
                   v-for="cat in categories" 
                   :key="cat.id"
                   :to="`/categories/${cat.slug}`" 
-                  class="flex items-center gap-2 py-1 transition-colors hover:text-primary"
+                  :class="mobileCategoryLinkClass(cat.slug)"
+                  @click="closeMobileMenu"
                 >
-                  <component :is="getIcon(cat.slug)" class="h-4 w-4" />
+                  <span class="flex h-8 w-8 items-center justify-center rounded-md bg-white/5 text-violet-300">
+                    <component :is="getIcon(cat.slug)" class="h-4 w-4" />
+                  </span>
                   {{ cat.name }}
                 </NuxtLink>
               </div>
             </div>
-            <NuxtLink to="/about" class="transition-colors hover:text-primary">About</NuxtLink>
-            <NuxtLink to="/contact" class="transition-colors hover:text-primary">Contact</NuxtLink>
+
+            <div class="space-y-2 border-t border-white/10 pt-4">
+              <NuxtLink
+                to="/about"
+                :class="mobileNavLinkClass('/about')"
+                @click="closeMobileMenu"
+              >
+                About
+              </NuxtLink>
+              <NuxtLink
+                to="/contact"
+                :class="mobileNavLinkClass('/contact')"
+                @click="closeMobileMenu"
+              >
+                Contact
+              </NuxtLink>
+            </div>
+
+            <div v-if="!user" class="flex flex-col gap-2 border-t border-white/10 pt-4">
+              <Button variant="ghost" class="justify-start text-foreground/70 hover:bg-white/10 hover:text-foreground" as-child>
+                <NuxtLink to="/auth/login" @click="closeMobileMenu">Login</NuxtLink>
+              </Button>
+              <Button class="bg-primary/90 hover:bg-primary" as-child>
+                <NuxtLink to="/auth/register" @click="closeMobileMenu">Sign Up</NuxtLink>
+              </Button>
+            </div>
           </nav>
         </SheetContent>
       </Sheet>
@@ -167,20 +231,25 @@ const getIcon = (slug: string) => categoryIcons[slug] || Cpu
       </div>
 
       <!-- Search & Actions -->
-      <div class="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-        <div class="w-full flex-1 md:w-auto md:flex-none">
+      <div
+        :class="[
+          'flex min-w-0 flex-1 items-center gap-2 md:justify-end',
+          showGlobalSearch ? 'justify-between' : 'justify-end'
+        ]"
+      >
+        <div v-if="showGlobalSearch" class="min-w-0 flex-1 md:w-auto md:flex-none">
           <div class="relative group">
             <Search class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-primary" />
             <Input
               v-model="searchQuery"
               type="search"
               placeholder="Search products..."
-              class="pl-9 sm:w-[300px] md:w-[200px] lg:w-[300px] bg-white/5 border-white/10 focus:border-primary/50 focus:bg-white/10 transition-all"
+              class="min-w-0 pl-9 sm:w-[300px] md:w-[200px] lg:w-[300px] bg-white/5 border-white/10 focus:border-primary/50 focus:bg-white/10 transition-all"
               @keyup.enter="handleSearch"
             />
           </div>
         </div>
-        <nav class="flex items-center space-x-1">
+        <nav class="flex shrink-0 items-center gap-1">
           <!-- Cart Sheet -->
           <LazyCartSheet />
 

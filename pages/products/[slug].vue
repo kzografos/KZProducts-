@@ -213,8 +213,8 @@ const selectImage = (index: number) => {
 </script>
 
 <template>
-  <div class="container py-8">
-    <Button variant="ghost" class="mb-6 pl-0 hover:bg-transparent hover:text-primary" as-child>
+  <div class="container py-6 sm:py-8">
+    <Button variant="ghost" class="mb-6 hover:bg-transparent hover:text-primary" as-child>
       <NuxtLink to="/products">
         <ArrowLeft class="mr-2 h-4 w-4" />
         Back to Products
@@ -238,7 +238,7 @@ const selectImage = (index: number) => {
       <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
         <!-- Image Gallery -->
         <div class="space-y-4">
-          <div class="max-h-[400px] aspect-auto rounded-lg overflow-hidden relative flex items-center justify-center">
+          <div class="relative h-[320px] w-full overflow-hidden rounded-lg sm:h-[400px]">
             <NuxtImg 
               :src="imageSrc" 
               :alt="product.name" 
@@ -247,7 +247,7 @@ const selectImage = (index: number) => {
               fetchpriority="high"
               width="800"
               height="800"
-              class="object-contain max-h-[400px] w-auto"
+              class="h-full w-full object-cover object-left"
               @error="handleImageError"
             />
             <!-- Image Error Overlay -->
@@ -325,10 +325,10 @@ const selectImage = (index: number) => {
               <div 
                 v-for="(val, key) in product.metadata" 
                 :key="key" 
-                class="grid grid-cols-3 border-b pb-2"
+                class="grid gap-1 border-b pb-2 sm:grid-cols-3"
               >
                 <dt class="font-medium capitalize text-muted-foreground">{{ String(key).replace(/_/g, ' ') }}</dt>
-                <dd class="col-span-2">{{ val }}</dd>
+                <dd class="sm:col-span-2">{{ val }}</dd>
               </div>
             </dl>
           </div>

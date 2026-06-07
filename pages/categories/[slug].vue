@@ -17,8 +17,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container py-8">
-    <Button variant="ghost" class="mb-6 pl-0 hover:bg-transparent hover:text-primary" as-child>
+  <div class="container py-6 sm:py-8">
+    <Button variant="ghost" class="mb-6 hover:bg-transparent hover:text-primary" as-child>
       <NuxtLink to="/products">
         <ArrowLeft class="mr-2 h-4 w-4" />
         All Products

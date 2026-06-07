@@ -1,4 +1,12 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
-  "extends": "./.nuxt/tsconfig.json"
+  "extends": "./.nuxt/tsconfig.json",
+  "exclude": [
+    "coverage",
+    "playwright-report",
+    "test-results",
+    "tests",
+    "playwright.config.ts",
+    "vitest.config.ts"
+  ]
 }

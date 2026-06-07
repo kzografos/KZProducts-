@@ -237,7 +237,7 @@ onMounted(() => {
     </div>
 
     <!-- Data Table -->
-    <div class="overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
+    <div class="overflow-x-auto rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
       <!-- Loading state -->
       <div v-if="loading" class="p-8">
         <div class="space-y-4">
@@ -253,7 +253,7 @@ onMounted(() => {
       </div>
 
       <!-- Table -->
-      <table v-else class="w-full">
+      <table v-else class="min-w-[640px] w-full">
         <thead class="border-b border-white/10 bg-white/5">
           <tr>
             <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">

@@ -9,21 +9,30 @@ definePageMeta({
 })
 
 type Order = Database['public']['Tables']['orders']['Row']
+type OrderItem = Database['public']['Tables']['order_items']['Row']
+
+interface OrderWithItems extends Order {
+  order_items?: OrderItem[]
+}
 
 const client = useSupabaseClient<Database>()
 const loading = ref(true)
-const orders = ref<Order[]>([])
+const orders = ref<OrderWithItems[]>([])
+const activeOrderId = ref<string | null>(null)
 
 // Fetch user's orders
 const fetchOrders = async () => {
   loading.value = true
   const { data, error } = await client
     .from('orders')
-    .select('*')
+    .select(`
+      *,
+      order_items (*)
+    `)
     .order('created_at', { ascending: false })
 
   if (!error && data) {
-    orders.value = data
+    orders.value = data as unknown as OrderWithItems[]
   }
   loading.value = false
 }
@@ -32,8 +41,8 @@ onMounted(() => {
   fetchOrders()
 })
 
-const formatPrice = (price: number) => {
-  return new Intl.NumberFormat('el-GR', { style: 'currency', currency: 'EUR' }).format(price)
+const formatPrice = (price: number | null | undefined) => {
+  return new Intl.NumberFormat('el-GR', { style: 'currency', currency: 'EUR' }).format(price || 0)
 }
 
 const formatDate = (date: string | null) => {
@@ -45,8 +54,8 @@ const formatDate = (date: string | null) => {
   }).format(new Date(date))
 }
 
-const getStatusConfig = (status: string) => {
-  switch (status.toLowerCase()) {
+const getStatusConfig = (status: string | null | undefined) => {
+  switch (status?.toLowerCase() || 'pending') {
     case 'paid':
     case 'completed':
       return { 
@@ -66,6 +75,12 @@ const getStatusConfig = (status: string) => {
         color: 'bg-red-500/20 text-red-500 border-red-500/30',
         label: 'Cancelled'
       }
+    case 'expired':
+      return {
+        icon: XCircle,
+        color: 'bg-muted/30 text-muted-foreground border-white/10',
+        label: 'Expired'
+      }
     case 'pending':
     default:
       return { 
@@ -74,6 +89,20 @@ const getStatusConfig = (status: string) => {
         label: 'Pending'
       }
   }
+}
+
+const isExpanded = (orderId: string) => activeOrderId.value === orderId
+
+const toggleOrder = (orderId: string) => {
+  activeOrderId.value = isExpanded(orderId) ? null : orderId
+}
+
+const getOrderDetailsId = (orderId: string) => `order-details-${orderId}`
+
+const getOrderItems = (order: OrderWithItems) => order.order_items || []
+
+const getLineTotal = (item: OrderItem) => {
+  return item.total_price ?? item.unit_price * item.quantity
 }
 </script>
 
@@ -115,7 +144,15 @@ const getStatusConfig = (status: string) => {
       <div 
         v-for="order in orders" 
         :key="order.id"
-        class="group relative bg-card/50 backdrop-blur border border-white/10 rounded-xl p-5 hover:border-white/20 transition-all hover:shadow-lg"
+        class="group relative cursor-pointer bg-card/50 backdrop-blur border border-white/10 rounded-xl p-5 hover:border-white/20 transition-all hover:shadow-lg focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+        role="button"
+        tabindex="0"
+        :aria-expanded="isExpanded(order.id)"
+        :aria-controls="getOrderDetailsId(order.id)"
+        :aria-label="`${isExpanded(order.id) ? 'Hide' : 'Show'} details for order ${order.order_number}`"
+        @click="toggleOrder(order.id)"
+        @keydown.enter.prevent="toggleOrder(order.id)"
+        @keydown.space.prevent="toggleOrder(order.id)"
       >
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <!-- Order Info -->
@@ -140,7 +177,68 @@ const getStatusConfig = (status: string) => {
             <div class="text-right">
               <p class="font-bold">{{ formatPrice(order.total) }}</p>
             </div>
-            <ChevronRight class="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
+            <div
+              class="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors group-hover:bg-white/10 group-hover:text-foreground"
+              aria-hidden="true"
+            >
+              <ChevronRight
+                :class="[
+                  'w-5 h-5 transition-transform duration-200',
+                  isExpanded(order.id) ? 'rotate-90' : ''
+                ]"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div
+          v-if="isExpanded(order.id)"
+          :id="getOrderDetailsId(order.id)"
+          class="mt-5 border-t border-white/10 pt-5"
+        >
+          <div class="mb-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
+            <span>Created {{ formatDate(order.created_at) }}</span>
+            <span>{{ getOrderItems(order).length }} item(s)</span>
+          </div>
+
+          <div v-if="getOrderItems(order).length" class="space-y-3">
+            <div
+              v-for="item in getOrderItems(order)"
+              :key="item.id"
+              class="grid gap-2 rounded-lg border border-white/10 bg-background/30 p-3 sm:grid-cols-[1fr_auto]"
+            >
+              <div>
+                <p class="font-medium">{{ item.product_name }}</p>
+                <p class="text-xs text-muted-foreground">
+                  Qty {{ item.quantity }} x {{ formatPrice(item.unit_price) }}
+                </p>
+              </div>
+              <p class="font-semibold sm:text-right">
+                {{ formatPrice(getLineTotal(item)) }}
+              </p>
+            </div>
+          </div>
+          <p v-else class="rounded-lg border border-white/10 bg-background/30 p-3 text-sm text-muted-foreground">
+            No item details found for this order.
+          </p>
+
+          <div class="mt-5 space-y-2 text-sm">
+            <div class="flex justify-between gap-4 text-muted-foreground">
+              <span>Subtotal</span>
+              <span>{{ formatPrice(order.subtotal) }}</span>
+            </div>
+            <div class="flex justify-between gap-4 text-muted-foreground">
+              <span>Shipping</span>
+              <span>{{ formatPrice(order.shipping) }}</span>
+            </div>
+            <div class="flex justify-between gap-4 text-muted-foreground">
+              <span>Tax</span>
+              <span>{{ formatPrice(order.tax) }}</span>
+            </div>
+            <div class="flex justify-between gap-4 border-t border-white/10 pt-3 font-semibold">
+              <span>Total</span>
+              <span>{{ formatPrice(order.total) }}</span>
+            </div>
           </div>
         </div>
       </div>

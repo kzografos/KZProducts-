@@ -45,15 +45,15 @@ const isReviewOwner = (review: ReviewWithDetails) => {
 </script>
 
 <template>
-  <div class="space-y-6">
+  <div class="space-y-6 overflow-x-clip">
     <!-- Header -->
-    <div class="flex gap-3 justify-end items-center">
+    <div class="flex items-center justify-end">
         <!-- Sort Dropdown -->
         <Select :model-value="sortOption" @update:model-value="handleSortChange">
-          <SelectTrigger class="w-[160px] bg-white/5 border-white/10 text-white">
+          <SelectTrigger class="w-full max-w-[160px] border-white/10 bg-white/5 text-white">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent class="w-[160px] max-w-[calc(100vw-2rem)]">
             <SelectItem 
               v-for="option in sortOptions" 
               :key="option.value" 
@@ -66,7 +66,7 @@ const isReviewOwner = (review: ReviewWithDetails) => {
     </div>
     
     <!-- Loading State -->
-    <div v-if="loading && reviews.length === 0" class="space-y-4">
+    <div v-if="loading && reviews.length === 0" class="space-y-4 overflow-hidden">
       <div 
         v-for="i in 3" 
         :key="i" 
@@ -103,7 +103,7 @@ const isReviewOwner = (review: ReviewWithDetails) => {
     </div>
     
     <!-- Reviews List -->
-    <div v-else class="space-y-4">
+    <div v-else class="space-y-4 overflow-hidden">
       <ReviewCard
         v-for="review in reviews"
         :key="review.id"

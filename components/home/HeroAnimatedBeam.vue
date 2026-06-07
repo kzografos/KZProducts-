@@ -9,14 +9,51 @@ import {
   Server,
 } from "lucide-vue-next";
 
-const containerRef = useTemplateRef("containerRef");
-const cpuRef = useTemplateRef("cpuRef");
-const gpuRef = useTemplateRef("gpuRef");
-const ramRef = useTemplateRef("ramRef");
-const pcCaseRef = useTemplateRef("pcCaseRef");
-const ssdRef = useTemplateRef("ssdRef");
-const motherboardRef = useTemplateRef("motherboardRef");
-const psuRef = useTemplateRef("psuRef");
+const containerRef = useTemplateRef<HTMLDivElement>("containerRef");
+const cpuRef = useTemplateRef<HTMLDivElement>("cpuRef");
+const gpuRef = useTemplateRef<HTMLDivElement>("gpuRef");
+const ramRef = useTemplateRef<HTMLDivElement>("ramRef");
+const pcCaseRef = useTemplateRef<HTMLDivElement>("pcCaseRef");
+const ssdRef = useTemplateRef<HTMLDivElement>("ssdRef");
+const motherboardRef = useTemplateRef<HTMLDivElement>("motherboardRef");
+const psuRef = useTemplateRef<HTMLDivElement>("psuRef");
+
+type BeamRefs = {
+  container: HTMLDivElement;
+  cpu: HTMLDivElement;
+  gpu: HTMLDivElement;
+  ram: HTMLDivElement;
+  pcCase: HTMLDivElement;
+  ssd: HTMLDivElement;
+  motherboard: HTMLDivElement;
+  psu: HTMLDivElement;
+};
+
+const beamRefs = computed<BeamRefs | null>(() => {
+  if (
+    !containerRef.value ||
+    !cpuRef.value ||
+    !gpuRef.value ||
+    !ramRef.value ||
+    !pcCaseRef.value ||
+    !ssdRef.value ||
+    !motherboardRef.value ||
+    !psuRef.value
+  ) {
+    return null;
+  }
+
+  return {
+    container: containerRef.value,
+    cpu: cpuRef.value,
+    gpu: gpuRef.value,
+    ram: ramRef.value,
+    pcCase: pcCaseRef.value,
+    ssd: ssdRef.value,
+    motherboard: motherboardRef.value,
+    psu: psuRef.value,
+  };
+});
 </script>
 
 <template>
@@ -112,23 +149,12 @@ const psuRef = useTemplateRef("psuRef");
     </div>
 
     <!-- Animated Beams - only render when all refs are available -->
-    <template
-      v-if="
-        containerRef &&
-        cpuRef &&
-        gpuRef &&
-        ramRef &&
-        pcCaseRef &&
-        ssdRef &&
-        motherboardRef &&
-        psuRef
-      "
-    >
+    <template v-if="beamRefs">
       <!-- Beams from left side to center (flow inward) -->
       <AnimatedBeam
-        :container-ref="containerRef"
-        :from-ref="cpuRef"
-        :to-ref="pcCaseRef"
+        :container-ref="beamRefs.container"
+        :from-ref="beamRefs.cpu"
+        :to-ref="beamRefs.pcCase"
         :curvature="-80"
         :reverse="false"
         :delay="0"
@@ -140,9 +166,9 @@ const psuRef = useTemplateRef("psuRef");
         :path-width="3"
       />
       <AnimatedBeam
-        :container-ref="containerRef"
-        :from-ref="gpuRef"
-        :to-ref="pcCaseRef"
+        :container-ref="beamRefs.container"
+        :from-ref="beamRefs.gpu"
+        :to-ref="beamRefs.pcCase"
         :curvature="-40"
         :reverse="false"
         :delay="1"
@@ -154,9 +180,9 @@ const psuRef = useTemplateRef("psuRef");
         :path-width="3"
       />
       <AnimatedBeam
-        :container-ref="containerRef"
-        :from-ref="ramRef"
-        :to-ref="pcCaseRef"
+        :container-ref="beamRefs.container"
+        :from-ref="beamRefs.ram"
+        :to-ref="beamRefs.pcCase"
         :curvature="40"
         :reverse="false"
         :delay="2"
@@ -170,9 +196,9 @@ const psuRef = useTemplateRef("psuRef");
 
       <!-- Beams from right side to center (flow inward) -->
       <AnimatedBeam
-        :container-ref="containerRef"
-        :from-ref="ssdRef"
-        :to-ref="pcCaseRef"
+        :container-ref="beamRefs.container"
+        :from-ref="beamRefs.ssd"
+        :to-ref="beamRefs.pcCase"
         :curvature="-80"
         :reverse="false"
         :delay="3"
@@ -184,9 +210,9 @@ const psuRef = useTemplateRef("psuRef");
         :path-width="3"
       />
       <AnimatedBeam
-        :container-ref="containerRef"
-        :from-ref="motherboardRef"
-        :to-ref="pcCaseRef"
+        :container-ref="beamRefs.container"
+        :from-ref="beamRefs.motherboard"
+        :to-ref="beamRefs.pcCase"
         :curvature="-40"
         :reverse="false"
         :delay="4"
@@ -198,9 +224,9 @@ const psuRef = useTemplateRef("psuRef");
         :path-width="3"
       />
       <AnimatedBeam
-        :container-ref="containerRef"
-        :from-ref="psuRef"
-        :to-ref="pcCaseRef"
+        :container-ref="beamRefs.container"
+        :from-ref="beamRefs.psu"
+        :to-ref="beamRefs.pcCase"
         :curvature="40"
         :reverse="false"
         :delay="5"

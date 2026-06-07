@@ -307,8 +307,8 @@ watch(filterStatus, () => {
     </div>
 
     <!-- Reviews Table -->
-    <div v-else class="overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
-      <table class="w-full">
+    <div v-else class="overflow-x-auto rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
+      <table class="min-w-[760px] w-full">
         <thead>
           <tr class="border-b border-white/10 text-left text-sm text-slate-400">
             <th class="px-4 py-3 font-medium">Product</th>

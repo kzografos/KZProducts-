@@ -43,18 +43,18 @@ const { data: page } = await useAsyncData("index", () =>
 
         <!-- CTA Buttons - Now below beam with slide-up animation -->
         <div
-          class="flex flex-col sm:flex-row justify-center gap-6 mt-2 animate-slide-up-fade"
+          class="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center sm:gap-6 mt-2 animate-slide-up-fade"
         >
           <!-- Primary Button with Glow -->
           <NuxtLink
             :to="page?.hero?.cta_primary_link || '/products'"
-            class="group relative inline-flex items-center justify-center"
+            class="group relative inline-flex w-full items-center justify-center sm:w-auto sm:min-w-40"
           >
             <span
               class="absolute inset-0 rounded-xl bg-violet-500/30 blur-xl transition-all duration-300 group-hover:bg-violet-500/50 group-hover:blur-2xl"
             />
             <span
-              class="relative inline-flex items-center justify-center rounded-xl bg-violet-600 px-8 py-3 text-base font-semibold text-white transition-all duration-300 hover:bg-violet-500 hover:scale-105"
+              class="relative inline-flex w-full items-center justify-center rounded-xl bg-violet-600 px-8 py-3 text-base font-semibold text-white transition-all duration-300 hover:bg-violet-500 hover:scale-105"
             >
               {{ page?.hero?.cta_primary || "Shop Now" }}
             </span>
@@ -63,7 +63,7 @@ const { data: page } = await useAsyncData("index", () =>
           <!-- Secondary Button -->
           <NuxtLink
             :to="page?.hero?.cta_secondary_link || '/about'"
-            class="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/5 px-8 py-3 text-base font-medium text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white/30"
+            class="inline-flex w-full items-center justify-center rounded-xl border border-white/20 bg-white/5 px-8 py-3 text-base font-medium text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white/30 sm:w-auto sm:min-w-40"
           >
             {{ page?.hero?.cta_secondary || "Learn More About Us" }}
           </NuxtLink>
