@@ -137,7 +137,7 @@ onMounted(() => {
 
     <!-- Stats Cards -->
     <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-      <div class="rounded-xl border border-white/10 bg-slate-800/50 p-4">
+      <div class="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-4">
         <div class="flex items-center gap-3">
           <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-500/20">
             <Bell class="h-5 w-5 text-violet-400" />
@@ -149,7 +149,7 @@ onMounted(() => {
         </div>
       </div>
       
-      <div class="rounded-xl border border-white/10 bg-slate-800/50 p-4">
+      <div class="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-4">
         <div class="flex items-center gap-3">
           <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/20">
             <Bell class="h-5 w-5 text-amber-400" />
@@ -161,7 +161,7 @@ onMounted(() => {
         </div>
       </div>
       
-      <div class="rounded-xl border border-white/10 bg-slate-800/50 p-4">
+      <div class="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-4">
         <div class="flex items-center gap-3">
           <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/20">
             <ShoppingBag class="h-5 w-5 text-emerald-400" />
@@ -175,7 +175,7 @@ onMounted(() => {
         </div>
       </div>
       
-      <div class="rounded-xl border border-white/10 bg-slate-800/50 p-4">
+      <div class="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-4">
         <div class="flex items-center gap-3">
           <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-red-500/20">
             <ShieldAlert class="h-5 w-5 text-red-400" />
@@ -191,7 +191,7 @@ onMounted(() => {
     </div>
 
     <!-- Filters -->
-    <div class="rounded-xl border border-white/10 bg-slate-800/50 p-4">
+    <div class="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-4">
       <div class="flex flex-wrap items-center gap-4">
         <div class="flex items-center gap-2">
           <Filter class="h-4 w-4 text-slate-400" />
@@ -201,7 +201,7 @@ onMounted(() => {
         <!-- Type Filter -->
         <select
           v-model="typeFilter"
-          class="rounded-lg border border-white/10 bg-slate-900 px-3 py-1.5 text-sm text-white focus:border-violet-500 focus:outline-none"
+          class="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-white focus:border-violet-500/50 focus:outline-none"
         >
           <option value="all">All Types</option>
           <option v-for="(label, type) in typeLabels" :key="type" :value="type">
@@ -212,7 +212,7 @@ onMounted(() => {
         <!-- Priority Filter -->
         <select
           v-model="priorityFilter"
-          class="rounded-lg border border-white/10 bg-slate-900 px-3 py-1.5 text-sm text-white focus:border-violet-500 focus:outline-none"
+          class="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-white focus:border-violet-500/50 focus:outline-none"
         >
           <option value="all">All Priorities</option>
           <option v-for="(label, priority) in priorityLabels" :key="priority" :value="priority">
@@ -223,7 +223,7 @@ onMounted(() => {
         <!-- Read Filter -->
         <select
           v-model="readFilter"
-          class="rounded-lg border border-white/10 bg-slate-900 px-3 py-1.5 text-sm text-white focus:border-violet-500 focus:outline-none"
+          class="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-white focus:border-violet-500/50 focus:outline-none"
         >
           <option value="all">All Status</option>
           <option value="unread">Unread Only</option>
@@ -242,7 +242,7 @@ onMounted(() => {
     </div>
 
     <!-- Notification List -->
-    <div class="rounded-xl border border-white/10 bg-slate-800/50 overflow-hidden">
+    <div class="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md overflow-hidden">
       <!-- Loading -->
       <div v-if="loading && notifications.length === 0" class="flex items-center justify-center py-20">
         <div class="h-8 w-8 animate-spin rounded-full border-2 border-violet-500 border-t-transparent" />
@@ -276,7 +276,7 @@ onMounted(() => {
           <!-- Icon -->
           <div
             class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl"
-            :class="notification.is_read ? 'bg-slate-700' : 'bg-slate-700/80'"
+            :class="notification.is_read ? 'bg-slate-800' : 'bg-slate-800/80'"
           >
             <component 
               :is="getTypeIcon(notification.type)" 
@@ -312,7 +312,7 @@ onMounted(() => {
                 {{ notification.priority.toUpperCase() }}
               </span>
               
-              <span class="inline-flex items-center rounded-lg bg-slate-700 px-2 py-0.5 text-[11px] text-slate-300">
+              <span class="inline-flex items-center rounded-lg bg-white/5 px-2 py-0.5 text-[11px] text-slate-300">
                 {{ typeLabels[notification.type] }}
               </span>
               
